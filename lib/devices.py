@@ -9,12 +9,13 @@ import select
 import events
 import mapping
 import constants as const
+import ConfigParser
+import os
 
 # This is a list of all the devices which have been created.
 # We use this for the receive() function.
 # It is populated by the __init__ of InputDevice instances.
 _allInputNodes = {}
-
 
 def read (timeout=None):
 	"""
@@ -48,6 +49,13 @@ class InputDevice (object):
 		Go on, pick one.
 	"""
 	
+	# What BTNs should we actually treat as LEDs if any?
+	saitekLED = {}
+	# Save file ConfigParser
+	savefile = None;
+	# Config Params
+	_configParams = {}
+	
 	Event = events.Event
 	
 	def _getBusy(self):
@@ -71,6 +79,9 @@ class InputDevice (object):
 		"""
 		global _allInputNodes
 		
+		# Allow access to config params in other places.
+		self._configParams = params;
+		
 		# This is a record of all currently 'down' keystrings, against the
 		# Key instance that started it all off.
 		self._pressed = {}
@@ -90,9 +101,13 @@ class InputDevice (object):
 		# at the same time...
 		self._starting = set()
 		
+		if self._configParams.has_key('leds'):
+			self.saitekLED = self._configParams['leds'].replace(' ', '').split(',');
+			print 'Buttons that are actually LEDs: %s' % self.saitekLED;
 		
 		# Do stuff with device nodes
-		nodes = ioctl.matchInputNodes (**params)
+		# nodes = ioctl.matchInputNodes (**params)
+		nodes = ioctl.matchInputNodes (vendor=params['vendor'], product=params['product'])
 		self._nodes = nodes
 		for node in nodes:
 			# Gimme gimme gimme!
@@ -130,6 +145,21 @@ class InputDevice (object):
 		self._remap = lambda chord, **kwargs: self.keymap.remap(chord, device=self.id, **kwargs)
 		self._inMap = lambda chord: self.keymap.deviceContains(chord, device=self.id)
 		
+		if self._configParams.has_key('savefile'):
+			self.savefile_name = self._configParams['savefile'];
+			self.savefile = ConfigParser.ConfigParser()
+			self.savefile.read(os.path.expanduser(self.savefile_name))
+			if self.savefile.has_section('lastled:'+self.id):
+				try:
+					stringCode = self.savefile.get('lastled:'+self.id, 'stringCode')
+					eventValue = self.savefile.get('lastled:'+self.id, 'eventValue')
+					key = mapping.Key(stringCode, eventValue, eventValue)
+					self._changeMode(key)
+					print 'Last LED mode was: %s' % stringCode
+				except KeyError:
+					print 'Last LED mode unknown, hoping for EV_LED event..'
+			else:
+				print 'Last LED mode unknown, hoping for EV_LED event..'
 	
 	def __repr__ (self):
 		params = (self.__class__.__name__, str(self.id), len(self._nodes))
@@ -208,6 +238,12 @@ class InputDevice (object):
 			## Most likely a SYN packet. We see a lot of those.
 			return False
 		
+		# Saitek Game pads send BTN events for a change in LED mode not EV_LED
+		# events, handle that nicely here if the appropriate config settings are
+		# set.
+		if (event.type == const.EV_KEY and stringCode in self.saitekLED):
+			event.type = const.EV_LED
+		
 		if event.type == const.EV_KEY and self._inMap(key):
 			if event.value == const.KEYDOWN:
 				self._startEvent (key)
@@ -240,7 +276,14 @@ class InputDevice (object):
 			
 		elif event.type == const.EV_LED:
 			# We've received a notification of a change in LED status
+			if self._configParams.has_key('savefile'):
+				if not self.savefile.has_section('lastled:'+self.id):
+					self.savefile.add_section('lastled:'+self.id)
+				self.savefile.set('lastled:'+self.id, 'stringCode', stringCode)
+				self.savefile.set('lastled:'+self.id, 'eventValue', event.value)
+				self.savefile.write(open(os.path.expanduser(self.savefile_name), 'wb'));
 			self._changeMode (key)
+			
 			
 		else:
 			# Don't have any specific rules for this type
@@ -258,7 +301,6 @@ class InputDevice (object):
 		if cycle not in queue:
 			queue[cycle] = cycle.getIter()
 		
-	
 	def _startEvent (self, key, modes=None):
 		"""
 			Starts whatever needs to be started with the additional

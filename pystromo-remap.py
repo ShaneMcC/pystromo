@@ -46,7 +46,6 @@ optParser.set_defaults(verbose=False, reload=False)
 
 options, args = optParser.parse_args()
 
-
 # Set up output device
 output = devices.OutputDevice()
 if options.verbose:
@@ -97,7 +96,7 @@ def getInputs(keymap, output):
 	for device, params in keymap.devices.iteritems():
 		dev = devices.InputDevice(id=device, keymap=keymap, output=output, **params)
 		inputs.append(dev)
-		
+
 		if options.verbose:
 			print 'Using device: %s' % str(dev)
 	return inputs
