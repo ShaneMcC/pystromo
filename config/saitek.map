@@ -1,0 +1,237 @@
+# Saitek Pro Gamer Command pad
+[Device:pro]
+vendor=0x06a3
+product=0x80c1
+leds=BTN_Z, BTN_TL, BTN_TR
+savefile=~/pystromo/config/saitek.map.save
+
+################################################################################
+# Green                                                                        #
+################################################################################
+[map:pro + BTN_Z]
+### F1
+#BTN_A:
+### F2
+#BTN_B:
+### F3
+#BTN_C:
+### F4
+#BTN_X:
+
+### 1
+#BTN_TRIGGER:
+### W
+#BTN_THUMB:
+### 3
+#BTN_THUMB2:
+### 4
+#BTN_TOP:
+
+### A
+#BTN_TOP2:
+### S
+#BTN_PINKIE:
+### D
+#BTN_BASE:
+### 8
+#BTN_BASE2:
+
+### 9
+#BTN_BASE3:
+### 10
+#BTN_BASE4:
+### 11
+#BTN_BASE5:
+
+### 12
+#BTN_BASE6:
+### 13
+#BTN_7:
+### 14
+#BTN_8:
+
+### 15
+#BTN_DEAD2:
+### 16
+#BTN_DEAD:
+### 21
+#BTN_Y:
+
+### X Axis
+#ABS_X:
+### Y Axis
+#ABS_Y:
+
+
+################################################################################
+# Yellow                                                                       #
+################################################################################
+[map:pro + BTN_TL]
+### F1
+#BTN_A:
+### F2
+#BTN_B:
+### F3
+#BTN_C:
+### F4
+#BTN_X:
+
+### 1
+#BTN_TRIGGER:
+### W
+#BTN_THUMB:
+### 3
+#BTN_THUMB2:
+### 4
+#BTN_TOP:
+
+### A
+#BTN_TOP2:
+### S
+#BTN_PINKIE:
+### D
+#BTN_BASE:
+### 8
+#BTN_BASE2:
+
+### 9
+#BTN_BASE3:
+### 10
+#BTN_BASE4:
+### 11
+#BTN_BASE5:
+
+### 12
+#BTN_BASE6:
+### 13
+#BTN_7:
+### 14
+#BTN_8:
+
+### 15
+#BTN_DEAD2:
+### 16
+#BTN_DEAD:
+### 21
+#BTN_Y:
+
+### X Axis
+#ABS_X:
+### Y Axis
+#ABS_Y:
+
+
+################################################################################
+# Red                                                                          #
+################################################################################
+[map:pro + BTN_TR]
+### F1
+#BTN_A:
+### F2
+#BTN_B:
+### F3
+#BTN_C:
+### F4
+#BTN_X:
+
+### 1
+#BTN_TRIGGER:
+### W
+#BTN_THUMB:
+### 3
+#BTN_THUMB2:
+### 4
+#BTN_TOP:
+
+### A
+#BTN_TOP2:
+### S
+#BTN_PINKIE:
+### D
+#BTN_BASE:
+### 8
+#BTN_BASE2:
+
+### 9
+#BTN_BASE3:
+### 10
+#BTN_BASE4:
+### 11
+#BTN_BASE5:
+
+### 12
+#BTN_BASE6:
+### 13
+#BTN_7:
+### 14
+#BTN_8:
+
+### 15
+#BTN_DEAD2:
+### 16
+#BTN_DEAD:
+### 21
+#BTN_Y:
+
+### X Axis
+#ABS_X:
+### Y Axis
+#ABS_Y:
+
+
+################################################################################
+# All                                                                          #
+################################################################################
+[map:pro]
+### F1
+#BTN_A:
+### F2
+#BTN_B:
+### F3
+#BTN_C:
+### F4
+#BTN_X:
+
+### 1
+#BTN_TRIGGER:
+### W
+#BTN_THUMB:
+### 3
+#BTN_THUMB2:
+### 4
+#BTN_TOP:
+
+### A
+#BTN_TOP2:
+### S
+#BTN_PINKIE:
+### D
+#BTN_BASE:
+### 8
+#BTN_BASE2:
+
+### 9
+#BTN_BASE3:
+### 10
+#BTN_BASE4:
+### 11
+#BTN_BASE5:
+
+### 12
+#BTN_BASE6:
+### 13
+#BTN_7:
+### 14
+#BTN_8:
+
+### 15
+#BTN_DEAD2:
+### 16
+#BTN_DEAD:
+### 21
+#BTN_Y:
+
+### X Axis
+#ABS_X:
+### Y Axis
+#ABS_Y:
