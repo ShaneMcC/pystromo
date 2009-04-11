@@ -103,7 +103,7 @@ class InputDevice (object):
 		
 		if self._configParams.has_key('leds'):
 			self.saitekLED = self._configParams['leds'].replace(' ', '').split(',');
-			print 'Buttons that are actually LEDs: %s' % self.saitekLED;
+			# print 'Buttons that are actually LEDs: %s' % self.saitekLED;
 		
 		# Do stuff with device nodes
 		# nodes = ioctl.matchInputNodes (**params)
@@ -155,11 +155,11 @@ class InputDevice (object):
 					eventValue = self.savefile.get('lastled:'+self.id, 'eventValue')
 					key = mapping.Key(stringCode, eventValue, eventValue)
 					self._changeMode(key)
-					print 'Last LED mode was: %s' % stringCode
+					#print 'Last LED mode was: %s' % stringCode
 				except KeyError:
-					print 'Last LED mode unknown, hoping for EV_LED event..'
+					print 'Last LED mode unknown, hoping for EV_LED event.. (HINT: Change the mode on the keypad..)'
 			else:
-				print 'Last LED mode unknown, hoping for EV_LED event..'
+				print 'Last LED mode unknown, hoping for EV_LED event.. (HINT: Change the mode on the keypad..)'
 	
 	def __repr__ (self):
 		params = (self.__class__.__name__, str(self.id), len(self._nodes))
@@ -276,7 +276,7 @@ class InputDevice (object):
 			
 		elif event.type == const.EV_LED:
 			# We've received a notification of a change in LED status
-			if self._configParams.has_key('savefile'):
+			if event.value == const.KEYDOWN and self._configParams.has_key('savefile'):
 				if not self.savefile.has_section('lastled:'+self.id):
 					self.savefile.add_section('lastled:'+self.id)
 				self.savefile.set('lastled:'+self.id, 'stringCode', stringCode)

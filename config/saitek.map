@@ -3,7 +3,7 @@
 vendor=0x06a3
 product=0x80c1
 leds=BTN_Z, BTN_TL, BTN_TR
-savefile=~/pystromo/config/saitek.map.save
+savefile=~/pystromo/config/saitek.save
 
 ################################################################################
 # Green                                                                        #
